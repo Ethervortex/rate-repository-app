@@ -27,7 +27,7 @@ const AppBar = () => {
         horizontal
         contentContainerStyle={styles.scrollView}
       >
-        <Link to="/" underlayColor={theme.colors.textAppBar} style={styles.tab}>
+        <Link to="/" underlayColor={theme.colors.textWhite} style={styles.tab}>
           <Text
             fontSize="subheading"
             fontWeight="bold"
@@ -36,7 +36,7 @@ const AppBar = () => {
             Repositories
           </Text>
         </Link>
-        <Link to="/signin" underlayColor={theme.colors.textAppBar} style={styles.tab}>
+        <Link to="/signin" underlayColor={theme.colors.textWhite} style={styles.tab}>
           <Text
             fontSize="subheading"
             fontWeight="bold"
