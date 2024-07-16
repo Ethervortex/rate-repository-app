@@ -1,17 +1,17 @@
-import { View, StyleSheet, Pressable, Text } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
+import Text from './Text';
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     backgroundColor: theme.colors.appBarBackground,
-    paddingTop: 50,
-    paddingBottom: 5,
+    paddingBottom: 10,
   },
   tab: {
     color: '#ffffff',
-    fontSize: 20,
+    paddingTop: 50,
     padding: 10,
   }
 });
@@ -20,7 +20,13 @@ const AppBar = () => {
   return (
     <View style={styles.container}>
       <Pressable>
-        <Text style={styles.tab}>Repositories</Text>
+        <Text
+          fontSize="subheading"
+          fontWeight="bold"
+          style={styles.tab}
+        >
+          Repositories
+        </Text>
       </Pressable>
     </View>
   );
