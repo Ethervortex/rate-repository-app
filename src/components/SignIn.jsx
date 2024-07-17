@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { View, StyleSheet, TextInput, Pressable } from 'react-native';
 import theme from '../theme';
 import Text from './Text';
@@ -29,6 +30,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
+  errorInput: {
+    borderColor: '#d73a4a',
+  },
+  errorText: {
+    color: '#d73a4a',
+    marginBottom: 5,
+  },
   button: {
     padding: 10,
     borderRadius: 5,
@@ -39,9 +47,19 @@ const styles = StyleSheet.create({
   },
 });
 
+const validationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .required('Username is required'),
+    password: yup
+      .string()
+      .required('Password is required'),
+  });
+
 const SignIn = () => {
-  const { handleChange, handleBlur, handleSubmit, values } = useFormik({
+  const { handleChange, handleBlur, handleSubmit, values, touched, errors } = useFormik({
     initialValues,
+    validationSchema,
     onSubmit,
   });
   return (
@@ -49,6 +67,7 @@ const SignIn = () => {
       <TextInput
         style={[
           styles.input,
+          touched.username && errors.username ? styles.errorInput : {},
           { color: values.username ? theme.colors.textPrimary : theme.colors.textSecondary },
         ]}
         placeholder="Username"
@@ -57,10 +76,14 @@ const SignIn = () => {
         onBlur={handleBlur('username')}
         value={values.username}
       />
+      {touched.username && errors.username && (
+        <Text style={styles.errorText}>{errors.username}</Text>
+      )}
 
       <TextInput
         style={[
           styles.input,
+          touched.password && errors.password ? styles.errorInput : {},
           { color: values.password ? theme.colors.textPrimary : theme.colors.textSecondary },
         ]}
         placeholder="Password"
@@ -70,6 +93,9 @@ const SignIn = () => {
         onBlur={handleBlur('password')}
         value={values.password}
       />
+      {touched.password && errors.password && (
+        <Text style={styles.errorText}>{errors.password}</Text>
+      )}
 
       <Pressable
         onPress={handleSubmit}
