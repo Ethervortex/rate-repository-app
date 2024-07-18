@@ -3,16 +3,12 @@ import * as yup from 'yup';
 import { View, StyleSheet, TextInput, Pressable } from 'react-native';
 import theme from '../theme';
 import Text from './Text';
-
+import useSignIn from '../hooks/useSignIn';
 
 const initialValues = {
     username: '',
     password: '',
   };
-
-const onSubmit = (values) => {
-  console.log(values);
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +53,18 @@ const validationSchema = yup.object().shape({
   });
 
 const SignIn = () => {
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      await signIn({ username, password });
+    } catch (e) {
+      console.log('Error in mutation:', e);
+    }
+  };
+
   const { handleChange, handleBlur, handleSubmit, values, touched, errors } = useFormik({
     initialValues,
     validationSchema,
