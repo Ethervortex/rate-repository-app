@@ -1,8 +1,13 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
 import Text from './Text';
+import { useApolloClient } from '@apollo/client'
+import { useNavigate } from 'react-router-native'
+import useAuthStorage from '../hooks/useAuthStorage'
+import { useQuery } from '@apollo/client';
+import { ME } from '../graphql/queries';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +26,19 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const navigate = useNavigate();
+  const { data } = useQuery(ME, {
+    fetchPolicy: 'cache-and-network'
+  });  
+  const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
+  
+  const signOut = async () => {
+    await authStorage.removeAccessToken();
+    apolloClient.resetStore();
+    navigate('/signin', { replace: true })
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -36,15 +54,27 @@ const AppBar = () => {
             Repositories
           </Text>
         </Link>
-        <Link to="/signin" underlayColor={theme.colors.textWhite} style={styles.tab}>
-          <Text
-            fontSize="subheading"
-            fontWeight="bold"
-            style={styles.tab}
-          >
-            Sign In
-          </Text>
-        </Link>
+        {data && data.me ? (
+          <Pressable onPress={signOut} style={styles.tab}>
+            <Text
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.tab}
+            >
+              Sign out
+            </Text>
+          </Pressable>
+        ) : (
+          <Link to="/signin" underlayColor={theme.colors.textWhite} style={styles.tab}>
+            <Text
+              fontSize="subheading"
+              fontWeight="bold"
+              style={styles.tab}
+            >
+              Sign in
+            </Text>
+          </Link>
+        )}
       </ScrollView>
     </View>
   );
