@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const OneItem = () => {
+const RepositoryInfo = () => {
   const { id } = useParams();
   const { repository, loading, error } = useRepo(id);
 
@@ -135,4 +135,4 @@ const OneItem = () => {
   );
 };
 
-export default OneItem;
+export default RepositoryInfo;
