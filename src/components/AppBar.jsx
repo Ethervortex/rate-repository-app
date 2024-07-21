@@ -3,6 +3,7 @@ import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
 import Text from './Text';
+import Tab from './Tab';
 import { useApolloClient } from '@apollo/client'
 import { useNavigate } from 'react-router-native'
 import useAuthStorage from '../hooks/useAuthStorage'
@@ -45,28 +46,10 @@ const AppBar = () => {
         horizontal
         contentContainerStyle={styles.scrollView}
       >
-        <Link to="/" underlayColor={theme.colors.textWhite} style={styles.tab}>
-          <Text
-            fontSize="subheading"
-            fontWeight="bold"
-            style={styles.tab}
-          >
-            Repositories
-          </Text>
-        </Link>
+        <Tab to="/" name="Repositories"></Tab>
         {(data && data.me) === null
           ? null
-          : (
-            <Link to="/review" underlayColor={theme.colors.textWhite} style={styles.tab}>
-              <Text
-                fontSize="subheading"
-                fontWeight="bold"
-                style={styles.tab}
-              >
-                Create a review
-              </Text>
-            </Link>
-          )
+          : <Tab to="/review" name="Create a review"></Tab>
         }
         {data && data.me ? (
           <Pressable onPress={signOut} style={styles.tab}>
@@ -78,17 +61,12 @@ const AppBar = () => {
               Sign out
             </Text>
           </Pressable>
-        ) : (
-          <Link to="/signin" underlayColor={theme.colors.textWhite} style={styles.tab}>
-            <Text
-              fontSize="subheading"
-              fontWeight="bold"
-              style={styles.tab}
-            >
-              Sign in
-            </Text>
-          </Link>
-        )}
+        ) : <Tab to="/signin" name="Sign in"></Tab>
+        }
+        {data && data.me 
+          ? null
+          : <Tab to="/signup" name="Sign up"></Tab>
+        }
       </ScrollView>
     </View>
   );
