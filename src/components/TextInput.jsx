@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSizes.body,
     fontFamily: theme.fonts.main,
     color: theme.colors.textPrimary,
-    borderRadius: theme.roundness,
-    borderColor: '#aab2bb',
+    borderRadius: 5,
+    borderColor: '#ccc',
   },
   error: {
     borderColor: theme.colors.error,

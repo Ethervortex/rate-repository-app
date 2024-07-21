@@ -54,6 +54,20 @@ const AppBar = () => {
             Repositories
           </Text>
         </Link>
+        {(data && data.me) === null
+          ? null
+          : (
+            <Link to="/review" underlayColor={theme.colors.textWhite} style={styles.tab}>
+              <Text
+                fontSize="subheading"
+                fontWeight="bold"
+                style={styles.tab}
+              >
+                Create a review
+              </Text>
+            </Link>
+          )
+        }
         {data && data.me ? (
           <Pressable onPress={signOut} style={styles.tab}>
             <Text

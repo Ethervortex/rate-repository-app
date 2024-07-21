@@ -16,7 +16,7 @@ const useSignIn = () => {
         }
       }
     });
-    console.log('Mutation response data:', data.authenticate.accessToken);
+    // console.log('Mutation response data:', data.authenticate.accessToken);
     await authStorage.setAccessToken(data.authenticate.accessToken);
     apolloClient.resetStore();
   };

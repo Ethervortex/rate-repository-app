@@ -8,6 +8,7 @@ const theme = {
     textWhite: '#ffffff',
     appBarBackground: '#242424',
     mainBackground: '#e1e4e8',
+    error: '#d73a4a',
   },
   fontSizes: {
     body: 14,
