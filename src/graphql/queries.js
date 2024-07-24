@@ -31,6 +31,7 @@ export const ME = gql`
         edges {
           node {
             repository {
+              id
               fullName
             }
             id

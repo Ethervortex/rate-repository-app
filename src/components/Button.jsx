@@ -1,5 +1,4 @@
 import { Pressable, View, StyleSheet } from 'react-native';
-
 import Text from './Text';
 import theme from '../theme';
 
