@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories, onRepositoryPress, selectedSort, setSort, searchKeyword, setSearch  }) => {
+export const RepositoryListContainer = ({ repositories, onRepositoryPress, selectedSort, setSort, searchKeyword, setSearch, onEndReach  }) => {
   
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -41,25 +41,33 @@ export const RepositoryListContainer = ({ repositories, onRepositoryPress, selec
       renderItem={rItem}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => <SortRepositories selectedSort={selectedSort} setSort={setSort} />}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
     </>
   );
 };
 
 const RepositoryList = () => {
+  const limit = 8;
   const [selectedSort, setSort] = useState("latest");
   const [searchKeyword, setSearch] = useState('');
   const [search] = useDebounce(searchKeyword, 1000)
-  const { repositories, refetch } = useRepositories(selectedSort, search);
+  const { repositories, fetchMore } = useRepositories(limit, selectedSort, search);
   const navigate = useNavigate();
 
   const openRepo = (id) => {
     navigate(`/repository/${id}`, { replace: true });
   };
   
-  useEffect(() => {
-    refetch();
-  }, [selectedSort]);
+  //useEffect(() => {
+  //  fetchMore();
+  //}, [selectedSort]);
+
+  const onEndReach = () => {
+    console.log('You have reached the end of the list');
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer 
@@ -69,6 +77,7 @@ const RepositoryList = () => {
       setSort={setSort}
       searchKeyword={searchKeyword}
       setSearch={setSearch}
+      onEndReach={onEndReach}
     />
 
   )
