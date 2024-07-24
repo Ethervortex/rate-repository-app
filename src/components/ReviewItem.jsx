@@ -60,7 +60,7 @@ const ReviewItem = ({ review }) => {
     <View style={styles.container}>
       <Text style={styles.score}>{review.rating}</Text>
       <View style={styles.content}>
-        <Text style={styles.name}>{review.user.username}</Text>
+        <Text style={styles.name}>{review.repository.fullName}</Text>
         <Text style={styles.date}>{fixDate(review.createdAt)}</Text>
         <Text style={styles.reviewText}>{review.text}</Text>
       </View>
