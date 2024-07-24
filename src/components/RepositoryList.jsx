@@ -4,6 +4,8 @@ import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useNavigate } from 'react-router-native';
 import SortRepositories from './SortRepositories';
+import { useDebounce } from 'use-debounce';
+import { Searchbar } from 'react-native-paper';
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories, onRepositoryPress, selectedSort, setSort }) => {
+export const RepositoryListContainer = ({ repositories, onRepositoryPress, selectedSort, setSort, searchKeyword, setSearch  }) => {
   
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -27,6 +29,12 @@ export const RepositoryListContainer = ({ repositories, onRepositoryPress, selec
     );
   };
   return (
+    <>
+    <Searchbar
+      placeholder="Search repositories"
+      onChangeText={setSearch}
+      value={searchKeyword}
+    />
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
@@ -34,12 +42,15 @@ export const RepositoryListContainer = ({ repositories, onRepositoryPress, selec
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => <SortRepositories selectedSort={selectedSort} setSort={setSort} />}
     />
+    </>
   );
 };
 
 const RepositoryList = () => {
   const [selectedSort, setSort] = useState("latest");
-  const { repositories, refetch } = useRepositories(selectedSort);
+  const [searchKeyword, setSearch] = useState('');
+  const [search] = useDebounce(searchKeyword, 1000)
+  const { repositories, refetch } = useRepositories(selectedSort, search);
   const navigate = useNavigate();
 
   const openRepo = (id) => {
@@ -56,6 +67,8 @@ const RepositoryList = () => {
       onRepositoryPress={openRepo}
       selectedSort={selectedSort}
       setSort={setSort}
+      searchKeyword={searchKeyword}
+      setSearch={setSearch}
     />
 
   )
