@@ -1,5 +1,6 @@
 import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
 import RepositoryInfo from './RepositoryInfo';
+import ReviewItem from './ReviewItem';
 import Text from './Text';
 import useRepo from '../hooks/useRepo';
 import { useParams } from 'react-router-native';
@@ -50,28 +51,6 @@ const styles = StyleSheet.create({
     maxWidth: width - 85,
   }
 });
-
-const fixDate = (wrongFormat) => {
-  const date = new Date(wrongFormat);
-
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-}
-
-const ReviewItem = ({ review }) => {
-  // Single review item
-  console.log(review.createdAt)
-  return (
-    <View style={styles.container}>
-      <Text style={styles.score}>{review.rating}</Text>
-      <View style={styles.content}>
-        <Text style={styles.name}>{review.user.username}</Text>
-        <Text style={styles.date}>{fixDate(review.createdAt)}</Text>
-        <Text style={styles.reviewText}>{review.text}</Text>
-      </View>
-    </View>
-    
-  );
-};
   
 const SingleRepository = () => {
   const { id } = useParams();

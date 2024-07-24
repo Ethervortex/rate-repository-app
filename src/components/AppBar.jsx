@@ -49,7 +49,12 @@ const AppBar = () => {
         <Tab to="/" name="Repositories"></Tab>
         {(data && data.me) === null
           ? null
-          : <Tab to="/review" name="Create a review"></Tab>
+          : (
+            <>
+            <Tab to="/review" name="Create a review"></Tab>
+            <Tab to="/myreviews" name="My reviews"></Tab>
+            </>
+          )
         }
         {data && data.me ? (
           <Pressable onPress={signOut} style={styles.tab}>
