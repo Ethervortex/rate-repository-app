@@ -29,12 +29,17 @@ const useRepositories = (first, selectedSort, searchKeyword) => {
     if (!canFetchMore) {
       return;
     }
+    //console.log('Before fetchMore')
     fetchMore({
       variables: {
+        first,
+        orderBy,
+        orderDirection,
+        searchKeyword,
         after: data.repositories.pageInfo.endCursor,
-        ...variables,
       },
     });
+    //console.log('After fetchMore')
   };
 
   return {

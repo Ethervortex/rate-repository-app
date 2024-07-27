@@ -1,19 +1,34 @@
 import { useQuery } from '@apollo/client';
 import { ONE_REPO } from '../graphql/queries';
 
-const useRepo = (id) => {
-  const { data, error, loading } = useQuery(ONE_REPO, { 
-    variables: { id },
+const useRepo = (variables) => {
+  const { data, loading, fetchMore, ...result } = useQuery(ONE_REPO, { 
+    variables,
     fetchPolicy: 'cache-and-network',
   });
-  console.log('Type of ID:', typeof id);
-  console.log('ID:', id, 'Data:', data)
+  
+  //console.log('Data:', data)
 
-  if (error) {
-    console.error("GraphQL query error:", error);
-  }
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data.repository.reviews.pageInfo.hasNextPage;
 
-  return { repository: data ? data.repository : undefined, loading, error };
+    if(!canFetchMore) {
+      return;
+    }
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+        ...variables
+      },
+    });
+  };
+
+  return { 
+    repository: data ? data.repository : undefined,
+    fetchMore: handleFetchMore,
+    loading,
+    ...result
+  };
 };
 
 export default useRepo;

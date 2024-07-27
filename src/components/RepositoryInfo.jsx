@@ -83,13 +83,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryInfo = () => {
-  const { id } = useParams();
-  const { repository, loading, error } = useRepo(id);
-
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-  if (!repository) return <Text>No repository found</Text>;
+const RepositoryInfo = ({ repository }) => {
+  if (!repository) return null;
 
   const handlePress = async () => {
     if (repository.url) {

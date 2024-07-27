@@ -66,32 +66,38 @@ export const ME = gql`
 `;
 
 export const ONE_REPO = gql`
-  query Repository($id: ID!) {
-    repository(id: $id ) {
-      id
-      fullName
-      description
-      language
-      ownerAvatarUrl
-      stargazersCount
-      forksCount
-      reviewCount
-      ratingAverage
-      url
-      reviews {
+  query Repository(
+    $id: ID!
+    $first: Int
+    $after: String
+    ) {
+    repository( id: $id ) {
+      ...RepoDetails
+      reviews (
+        first: $first
+        after: $after
+      ) {
         edges {
           node {
             id
             text
             rating
             createdAt
+            repositoryId
             user {
               id
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
         }
       }
     }
   }
+  ${REPO_DETAILS}
 `;

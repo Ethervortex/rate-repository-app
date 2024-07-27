@@ -72,12 +72,17 @@ const ReviewItem = ({ review }) => {
 };
 
 const SingleRepository = () => {
+  limit = 8
   const { id } = useParams();
-  const { repository, loading, error } = useRepo(id);
+  //const { repository, loading, error } = useRepo(id);
+  const { repository, fetchMore } = useRepo({ first: limit, id: id });
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-  if (!repository) return <Text>No repository found</Text>;
+  const onEndReach = () => {
+    //console.log('Testing end of list')
+    fetchMore();
+  };
+
+  if (!repository) return <Text>Repository not found</Text>;
 
   const ItemSeparator = () => <View style={styles.separator} />;
   
@@ -92,7 +97,8 @@ const SingleRepository = () => {
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
-      // ...
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

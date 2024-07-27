@@ -59,13 +59,9 @@ const RepositoryList = () => {
   const openRepo = (id) => {
     navigate(`/repository/${id}`, { replace: true });
   };
-  
-  //useEffect(() => {
-  //  fetchMore();
-  //}, [selectedSort]);
 
   const onEndReach = () => {
-    console.log('You have reached the end of the list');
+    //console.log('You have reached the end of the list');
     fetchMore();
   };
 
